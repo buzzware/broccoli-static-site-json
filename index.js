@@ -6,9 +6,9 @@ const yaml = require('js-yaml');
 const mkdirp = require('mkdirp');
 const assign = require('lodash.assign');
 const _ = require('lodash');
-const showdown = require('showdown');
+//const showdown = require('showdown');
 
-const converter = new showdown.Converter();
+//const converter = new showdown.Converter();
 
 const {
   existsSync,
@@ -61,9 +61,9 @@ function readMarkdownFolder(src, options) {
       path: file.path,
       id: file.path.replace(/.md$/, ''),
     }, yamlFront.loadFront(file.content)))
-    .map(file => assign(file, {
-      html: converter.makeHtml(file.__content),
-    }));
+    // .map(file => assign(file, {
+    //   html: converter.makeHtml(file.__content),
+    // }));
 }
 
 class BroccoliStaticSiteJson extends Plugin {
@@ -79,7 +79,7 @@ class BroccoliStaticSiteJson extends Plugin {
     const serializerOptions = {
       attributes: _.union([
         '__content',
-        'html',
+        //'html',
         'title'], this.options.attributes),
       keyForAttribute(attr) {
         switch (attr) {
