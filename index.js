@@ -86,7 +86,7 @@ class BroccoliStaticSiteJson extends Plugin {
           case '__content':
             return 'content';
           default:
-            return _.camelCase(attr);
+            return attr; //_.camelCase(attr);
         }
       },
     };
@@ -140,6 +140,15 @@ class BroccoliStaticSiteJson extends Plugin {
       const directory = dirname(join(this.outputPath, this.options.contentFolder, file.path));
       if (!existsSync(directory)) {
         mkdirp.sync(dirname(join(this.outputPath, this.options.contentFolder, file.path)));
+      }
+
+      const keys = Object.keys(file);
+      for (let k of keys) {
+        if (k[0]==='_')
+          continue;
+        if (this.contentSerializer.opts.attributes.includes(k))
+          continue;
+        this.contentSerializer.opts.attributes.push(k);
       }
 
       const serialized = this.contentSerializer.serialize(file);
